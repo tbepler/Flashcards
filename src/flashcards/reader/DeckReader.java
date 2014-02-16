@@ -4,12 +4,23 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import flashcards.data.Deck;
 
 public class DeckReader {
 	
 	private static final String PPT_EXT = ".ppt";
 	private static final String PPTX_EXT = ".pptx";
+	
+	private static final FileNameExtensionFilter[] SUPPORTED_FILTERS = new FileNameExtensionFilter[]{
+		new FileNameExtensionFilter("PowerPoint pre 2007", "ppt"),
+		new FileNameExtensionFilter("PowerPoint 2007 and later", "pptx")
+	};
+	
+	public static FileNameExtensionFilter[] getSupportedFileExtensionFilters(){
+		return SUPPORTED_FILTERS;
+	}
 
 	public static Deck readFile(File f) throws FileNotFoundException, IOException, UnsupportedFileFormatException{
 		if(f.getName().endsWith(PPTX_EXT)){

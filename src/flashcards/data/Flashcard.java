@@ -1,7 +1,8 @@
 package flashcards.data;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.util.Observable;
 
 public class Flashcard extends Observable{
@@ -42,8 +43,9 @@ public class Flashcard extends Observable{
 		this.notifyObservers();
 	}
 	
-	public void draw(Graphics g){
-		g.drawImage(m_Display, 0, 0, null);
+	public void draw(Graphics2D g, int width, int height){
+		AffineTransform at = AffineTransform.getScaleInstance(((double) width)/((double) m_Display.getWidth(null)), ((double) height)/((double) m_Display.getHeight(null)));
+		g.drawImage(m_Display, at, null);
 	}
 	
 }

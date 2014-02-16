@@ -2,7 +2,7 @@ package flashcards.data;
 
 import java.util.*;
 
-public class Deck extends Observable{
+public class Deck extends Observable implements Observer{
 	
 	private List<Flashcard> m_Cards = new ArrayList<Flashcard>();
 	private int m_Index = 0;
@@ -20,6 +20,10 @@ public class Deck extends Observable{
 		m_Index = 0;
 		this.setChanged();
 		this.notifyObservers();
+	}
+	
+	public void flipCard(){
+		this.getCurrentCard().flipOver();
 	}
 	
 	private void increment(){
@@ -52,10 +56,12 @@ public class Deck extends Observable{
 		if(m_Marked.isEmpty()){
 			return this.getCurrentCard();
 		}
+		this.getCurrentCard().deleteObserver(this);
 		this.increment();
 		while(!m_Marked.contains(this.getCurrentCard())){
 			this.increment();
 		}
+		this.getCurrentCard().addObserver(this);
 		this.setChanged();
 		this.notifyObservers();
 		return this.getCurrentCard();
@@ -65,10 +71,12 @@ public class Deck extends Observable{
 		if(m_Marked.isEmpty()){
 			return this.getCurrentCard();
 		}
+		this.getCurrentCard().deleteObserver(this);
 		this.decrement();
 		while(!m_Marked.contains(this.getCurrentCard())){
 			this.decrement();
 		}
+		this.getCurrentCard().addObserver(this);
 		this.setChanged();
 		this.notifyObservers();
 		return this.getCurrentCard();
@@ -79,17 +87,29 @@ public class Deck extends Observable{
 	}
 	
 	public Flashcard nextCard(){
+		this.getCurrentCard().deleteObserver(this);
 		this.increment();
+		this.getCurrentCard().addObserver(this);
 		this.setChanged();
 		this.notifyObservers();
 		return this.getCurrentCard();
 	}
 	
 	public Flashcard previousCard(){
+		this.getCurrentCard().deleteObserver(this);
 		this.decrement();
+		this.getCurrentCard().addObserver(this);
 		this.setChanged();
 		this.notifyObservers();
 		return this.getCurrentCard();
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		if(arg0 == this.getCurrentCard()){
+			this.setChanged();
+			this.notifyObservers();
+		}
 	}
 	
 }
