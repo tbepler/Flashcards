@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
+import org.apache.poi.xslf.usermodel.XSLFNotes;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
+
 import flashcards.data.Deck;
 import flashcards.data.Flashcard;
 
